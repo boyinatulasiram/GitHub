@@ -9,23 +9,26 @@ import "./auth.css";
 import logo from "../../assets/github-mark-white.svg";
 import { Link } from "react-router-dom";
 
-const Signup = () => {
+const Login = () => {
+  // useEffect(() => {
+  //   localStorage.removeItem("token");
+  //   localStorage.removeItem("userId");
+  //   setCurrentUser(null);
+  // });
+
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
   const { setCurrentUser } = useAuth();
 
-  const handleSignup = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
-      const res = await axios.post("http://localhost:3002/signup", {
+      const res = await axios.post("http://localhost:8080/login", {
         email: email,
         password: password,
-        username: username,
       });
 
       localStorage.setItem("token", res.data.token);
@@ -37,7 +40,7 @@ const Signup = () => {
       window.location.href = "/";
     } catch (err) {
       console.error(err);
-      alert("Signup Failed!");
+      alert("Login Failed!");
       setLoading(false);
     }
   };
@@ -53,26 +56,12 @@ const Signup = () => {
           <Box sx={{ padding: 1 }}>
             <PageHeader>
               <PageHeader.TitleArea variant="large">
-                <PageHeader.Title>Sign Up</PageHeader.Title>
+                <PageHeader.Title>Sign In</PageHeader.Title>
               </PageHeader.TitleArea>
             </PageHeader>
           </Box>
         </div>
-
         <div className="login-box">
-          <div>
-            <label className="label">Username</label>
-            <input
-              autoComplete="off"
-              name="Username"
-              id="Username"
-              className="input"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-
           <div>
             <label className="label">Email address</label>
             <input
@@ -85,7 +74,6 @@ const Signup = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-
           <div className="div">
             <label className="label">Password</label>
             <input
@@ -103,15 +91,14 @@ const Signup = () => {
             variant="primary"
             className="login-btn"
             disabled={loading}
-            onClick={handleSignup}
+            onClick={handleLogin}
           >
-            {loading ? "Loading..." : "Signup"}
+            {loading ? "Loading..." : "Login"}
           </Button>
         </div>
-
         <div className="pass-box">
           <p>
-            Already have an account? <Link to="/auth">Login</Link>
+            New to GitHub? <Link to="/signup">Create an account</Link>
           </p>
         </div>
       </div>
@@ -119,4 +106,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
